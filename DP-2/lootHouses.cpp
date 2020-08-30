@@ -5,9 +5,7 @@ using namespace std;
 int getMaxMoney_dp(int arr[], int n){
     int *output=new int[n+1];
     output[0]=arr[0];
-    if(n>1){
-        output[1]=max(arr[1], output[0]);
-    }
+    output[1]=max(arr[1], output[0]);
     for(int i=2; i<n+1; i++){
         output[i]=max(arr[i]+output[i-2], output[i-1]);
     }
