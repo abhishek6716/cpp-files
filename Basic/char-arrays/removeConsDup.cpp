@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 
+// input->aabbccbaad
+// output->abcbad
 void RemoveConsecutiveDuplicates(char input[]){
     int nextIndex=1; 
     char lastChar=input[0];
