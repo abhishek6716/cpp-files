@@ -18,6 +18,157 @@ class Pair{
     Node *tail;
 };
 
+Node* kReverse(Node *head, int k){
+    if(k==0 || k==1){
+        return head;
+    }
+    Node *current=head;
+    Node *fwd=NULL;
+    Node *prev=NULL;
+    int cnt=0;
+    while(cnt<k && current!=NULL){
+        fwd=current->next;
+        current->next=prev;
+        prev=current;
+        current=fwd;
+        cnt++;
+    }
+    if(fwd!=NULL){
+        head->next=kReverse(fwd, k);
+    }
+    return prev;
+}
+
+Node* swapNodes(Node* head, int i, int j){                                     // swap nodes of LL
+    if(i==j){
+        return head;
+    }
+    Node *currentNode=head, *prev=NULL;
+    Node *firstNode=NULL, *firstNodePrev=NULL, *secondNode=NULL, *secondNodePrev=NULL;
+    int pos=0;
+    while(currentNode!=NULL){
+        if(pos==i){
+            firstNode=currentNode;
+            firstNodePrev=prev;
+        }
+        else if(pos==j){
+            secondNode=currentNode;
+            secondNodePrev=prev;
+        }
+        prev=currentNode;
+        currentNode=currentNode->next;
+        pos++;
+    }
+    if(firstNodePrev!=NULL){
+        firstNodePrev->next=secondNode;
+    }
+    else{
+        head=secondNode;
+    }
+    if(secondNodePrev!=NULL){
+        secondNodePrev->next=firstNode;
+    }
+    else{
+        head=firstNode;
+    }
+    Node* currentFirstNode=secondNode->next;
+    secondNode->next=firstNode->next;
+    firstNode->next=currentFirstNode;
+    return head;
+}
+
+Node* SkipM_DeleteN(Node* head, int m, int n){
+    if(head==NULL || m==0){
+        return head;
+    }
+    if(n==0){
+        return head;
+    }
+    Node* currNode=head;
+    Node* temp=NULL;
+    while(currNode!=NULL){
+        int take=0;
+        int skip=0;
+
+        while(currNode!=NULL && take<m){
+            if(temp==NULL){
+                temp=currNode;
+            }
+            else{
+                temp->next=currNode;
+                temp=currNode;
+            }
+            currNode=currNode->next;
+            take++;
+        }
+        while(currNode!=NULL && skip<n){
+            Node* newNode=currNode;
+            delete currNode;
+            currNode=newNode->next;
+            skip++;
+        }
+    }
+    if(temp!=NULL){
+        temp->next=NULL;
+    }
+    return head;
+}
+
+Node* EvenAfterOdd(Node* head){                                                // even after odd
+    if(head==NULL){
+        return head;
+    }
+    Node* oddHead=NULL;
+    Node* oddTail=NULL;
+    Node* evenHead=NULL;
+    Node* evenTail=NULL;
+
+    while(head!=NULL){
+        if(head->data%2==0){
+            if(evenHead==NULL){
+                evenHead=head;
+                evenTail=head;
+            }
+            else{
+                evenTail->next=head;
+                evenTail=evenTail->next;
+            }       
+        }
+        else{
+            if(oddHead==NULL){
+                oddHead=head;
+                oddTail=head;
+            }
+            else{
+                oddTail->next=head;
+                oddTail=oddTail->next;
+            }
+        }
+        head=head->next;
+    }
+    if(oddHead==NULL){
+        return evenHead;
+    }
+    else{
+        oddTail->next=evenHead;
+    }
+    if(evenHead!=NULL){
+        evenTail->next=NULL;
+    }
+    return oddHead;
+}
+
+int FindNode_Rec(Node* head, int n){                                           // find node
+    if(head==NULL){
+        return -1;
+    }
+    if(head->data==n){
+        return 0;
+    }
+    int smallAns=FindNode_Rec(head->next, n);
+    return smallAns+1;
+}
+
 Pair reverseLL_2(Node *head){
     if(head==NULL && head->next==NULL){
         Pair ans;
@@ -88,23 +239,6 @@ Node* MidNode(Node* head){                                                     /
     return slow;
 }
 
-Node* MergeSort(Node* head){                                                   // merge sort
-    if(head==NULL || head->next==NULL){
-        return head;
-    }
-    
-    Node* mid=MidNode(head);
-    Node* half1=head;
-    Node* half2=mid->next;
-    mid->next=NULL;
-
-    half1=MergeSort(half1);
-    half2=MergeSort(half2);
-
-    Node* finalHead=MergeTwoSorted_LL(half1, half2);
-    return finalHead;
-}
-
 Node* MergeTwoSorted_LL(Node* head1, Node* head2){                             // merge two sorted LL
     if(head1==NULL){
         return head2;
@@ -146,6 +280,23 @@ Node* MergeTwoSorted_LL(Node* head1, Node* head2){                             /
     return newHead;
 }
 
+Node* MergeSort(Node* head){                                                   // merge sort
+    if(head==NULL || head->next==NULL){
+        return head;
+    }
+    
+    Node* mid=MidNode(head);
+    Node* half1=head;
+    Node* half2=mid->next;
+    mid->next=NULL;
+
+    half1=MergeSort(half1);
+    half2=MergeSort(half2);
+
+    Node* finalHead=MergeTwoSorted_LL(half1, half2);
+    return finalHead;
+}
+
 Node* MidPnt(Node* head){                                                      // mid node of Link List
     if(head==NULL || head->next==NULL){
         return head;
@@ -160,6 +311,35 @@ Node* MidPnt(Node* head){                                                      /
     return slow;
 }
 
-int main(){
+Node* TakeInput_Better(){                                                      // better complexity
+    int data;
+    cin>>data;
+    Node *head=NULL;
+    Node *tail=NULL;
+    while(data!=-1){
+        Node *newNode=new Node(data);
+        if(head==NULL){
+            head=newNode;
+            tail=newNode;
+        }
+        else{
+            tail->next=newNode;
+            tail=newNode;                                                      // or tail=tail->next;
+        }
+        cin>>data;
+    }
+    return head;
+}
 
+void Print(Node *head){
+    Node *temp=head;
+    while(temp!=NULL){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
+
+int main(){
+    Node* head=TakeInput_Better();
 }
