@@ -19,7 +19,7 @@ class Stack{
     int size;
 
     public:
-    stack(){
+    Stack(){
         head=NULL;
         size=0;
     }
