@@ -188,6 +188,68 @@ void inorder(BinaryTreeNode<int> *root){                                        
     cout<<root->data<<" ";
     inorder(root->right);
 }
+
+BinaryTreeNode<int>* BuildTreeHelper(int* in, int* pre, int inS, int inE, int preS, int preE){
+    if(inS>inE){
+        return NULL;
+    }
+    int rootData=pre[preS];
+    int rootIndex=-1;
+    for(int i=inS; i<inE; i++){
+        if(in[i]==rootData){
+            rootIndex=i;
+            break;
+        }
+    }
+    int lInS=inS;
+    int lInE=rootIndex-1;
+    int lPreS=preS+1;
+    int lPreE=lInE-lInS+lPreS;
+    int rPreS=lPreE+1;
+    int rPreE=preE;
+    int rInS=rootIndex+1;
+    int rInE=inE;
+    BinaryTreeNode<int> *root=new BinaryTreeNode<int>(rootData);
+    root->left=BuildTreeHelper(in, pre, lInS, lInE, lPreS, lPreE);
+    root->right=BuildTreeHelper(in, pre, rInS, rInE, rPreS, rPreE);
+    return root;
+}
+BinaryTreeNode<int>* BuildTree(int* in, int* pre, int size){                                       // built tree from inorder preorder 
+    return BuildTreeHelper(in, pre, 0, size-1, 0, size-1);
+}
+
+BinaryTreeNode<int>* helper(int *postorder, int postStart, int postEnd, int *inorder, int inStart, int inEnd){
+    if(postStart>postEnd || inStart>inEnd){
+        return NULL;
+    }
+    int rootData=postorder[postEnd];
+    int rootIndex=-1;
+    for(int i=inStart; i<inEnd; i++){
+        if(inorder[i]==rootData){
+            rootIndex=i;
+            break;
+        }
+    }
+    int LpostStart=postStart;
+    int RpostEnd=postEnd-1;
+    int LinStart=inStart;
+    int LinEnd=rootIndex-1;
+    int RinStart=rootIndex+1;
+    int RinEnd=inEnd;
+    int LpostEnd=LinEnd-LinStart+LpostStart;
+    int RpostStart=LpostEnd+1;
+    BinaryTreeNode<int> *root=new BinaryTreeNode<int>(rootData);
+    root->left=helper(postorder, LpostStart, LpostEnd, inorder, LinStart, LinEnd);
+    root->right=helper(postorder, RpostStart, RpostEnd, inorder, RinStart, RinEnd);
+    return root;
+}
+BinaryTreeNode<int>* getTreefromPostandInOrder(int *postorder, int postLength, int *inorder, int inLength){          //built tree from inorder and postorder
+    int postStart=0;
+    int postEnd=postLength-1;
+    int inStart=0;
+    int inEnd=inLength-1;
+    return helper(postorder, postStart, postEnd, inorder, inStart, inEnd);
+}
 /* 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1 */ 
 int main(){
     /*
