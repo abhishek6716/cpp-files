@@ -227,5 +227,3 @@ vector<int>* getRootToNodePath(BinaryTreeNode<int> *root, int data){
     }
     
 }
-
-
