@@ -107,4 +107,25 @@ class BST{
     bool hasData(int data){                                                              // hasdata
         return hasData(data, root);
     }
+
+    private:
+    void PrintTreeHelper(BinaryTreeNode<int> *node){                                     // print BST helper
+        if(node==NULL){
+        return;
+        }
+        cout<<node->data<<":";
+        if(node->left!=NULL){
+        cout<<"L"<<node->left->data;
+        }
+        if(node->right!=NULL){
+        cout<<"R"<<node->right->data;
+        }
+        cout<<endl;
+        PrintTreeHelper(node->left);
+        PrintTreeHelper(node->right);
+    }
+    public:
+    void printTree(){                                                                    // print BST
+        PrintTreeHelper(root);
+    }
 };
