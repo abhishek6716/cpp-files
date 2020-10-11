@@ -1,6 +1,9 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<climits>
+#include<cmath>
+#include<stack>
 using namespace std;
 
 template<typename T>
@@ -288,4 +291,261 @@ int lcaInBST2(BinaryTreeNode<int> *root, int x, int y){                         
         return lcaInBST2(root->left, x, y);
     }
     return root->data;
+}
+
+////// largest BST subtree/////////
+int minimum(BinaryTreeNode<int> *root){
+    if(root==NULL){
+        return INT_MAX;
+    }
+    return min(root->data,min(minimum(root->left),minimum(root->right)));
+}
+int maximum(BinaryTreeNode<int> *root){
+    if(root==NULL){
+        return INT_MIN;
+    }
+    return max(root->data,max(maximum(root->left),maximum(root->right)));
+}
+
+bool isBST(BinaryTreeNode<int> *root){
+       if(root==NULL){
+           return true;
+       }
+    int leftmax=maximum(root->left);
+    int rightmin=minimum(root->right);
+    bool output=(root->data>leftmax)&&(root->data<=rightmin)&&isBST(root->left)&&isBST(root->right);
+    return output;
+
+}
+int height(BinaryTreeNode<int> *root) {
+    if(root==NULL){
+        return 0;
+    }
+    int left_height=height(root->left);
+    int right_height=height(root->right);
+    if(left_height>right_height){
+        return left_height+1;
+    }else
+    {
+        return right_height+1;
+    }
+
+}
+
+int largestBSTSubtree1(BinaryTreeNode<int> *root) {                                      // largest BST compexity O(n^2)
+    if(isBST(root)){
+        height(root);
+    }else{
+    return max(largestBSTSubtree1(root->left),largestBSTSubtree1(root->right));
+    }
+}
+
+class BSTsubtreeReturn{
+    public:
+    int max;
+    int min;
+    int height;
+    bool isBST;
+};
+BSTsubtreeReturn largestBSTsubtree2helper(BinaryTreeNode<int> *root){
+    if(root==NULL){
+        BSTsubtreeReturn ans;
+        ans.max=INT_MIN;
+        ans.min=INT_MAX;
+        ans.height=0;
+        ans.isBST=true;
+        return ans;
+    }
+    BSTsubtreeReturn left=largestBSTsubtree2helper(root->left);
+    BSTsubtreeReturn right=largestBSTsubtree2helper(root->right);
+    if(!(right.isBST && right.min>root->data)){
+        right.isBST=false;
+    }
+    if(!(left.isBST && left.max<root->data)){
+        left.isBST=false;
+    }
+    BSTsubtreeReturn ans;
+    if(!left.isBST || !right.isBST || root->data<left.max || root->data>right.min){
+        if(left.height>right.height){
+            left.isBST=false;
+            return left;
+        } else{
+            right.isBST=false;
+            return right;
+        }
+    }
+    ans.isBST=true;
+    ans.min=min(left.min, min(right.min, root->data));
+    ans.max=max(left.max, max(right.max, root->data));
+    ans.height=max(left.height, right.height)+1;
+    return ans;
+}
+int largestBSTsubtree2(BinaryTreeNode<int> *root){                                       // largest BST complexity O(n)
+    return largestBSTsubtree2helper(root).height;
+}
+
+int replaceWithLargerNodesSum(BinaryTreeNode<int> *root, int sum){                       // replace with larger nodes sum
+    if(root==NULL){
+        return sum;
+    }
+    sum=replaceWithLargerNodesSum(root->right, sum);
+    sum=sum+root->data;
+    root->data=sum;
+    sum=replaceWithLargerNodesSum(root->left, sum);
+    return sum;
+}
+void replaceWithLargerNodesSum(BinaryTreeNode<int> *root){
+    int sum=0;
+    replaceWithLargerNodesSum(root, sum);
+}
+
+void rootToLeafPathsSumToKHelper(BinaryTreeNode<int> *root, vector<int> path, int k){
+    if(root==NULL){
+        return;
+    }
+    k=k-root->data;
+    path.push_back(root->data);
+
+    if(root->left==NULL && root->right==NULL){
+        if(k==0){
+            for(int i=0; i<path.size(); i++){
+                cout<<path[i]<<" ";
+            }
+            cout<<endl;
+        }
+        path.pop_back();
+        return;
+    }
+    rootToLeafPathsSumToKHelper(root->left, path, k);
+    rootToLeafPathsSumToKHelper(root->right, path, k);
+    path.pop_back();
+}
+void rootToLeafPathsSumToK(BinaryTreeNode<int> *root, int k){
+    vector<int> path;
+    rootToLeafPathsSumToKHelper(root, path, k);
+}
+
+////////   print nodes at distance k ///////
+
+void downwardsNodes(BinaryTreeNode<int> *root, int k){
+    if(root==NULL || k<0){
+        return;
+    }
+    if(k==0){
+        cout<<root->data<<endl;
+        return;
+    }
+    downwardsNodes(root->left, k-1);
+    downwardsNodes(root->right, k-1);
+}
+int printKdistanceNodes(BinaryTreeNode<int> *root, int node, int k){                     // print nodes at distance k
+    if(root==NULL){
+        return -1;
+    }
+    if(root->data==node){
+        downwardsNodes(root, k);
+        return 0;
+    }
+    int dl=printKdistanceNodes(root->left, node, k);
+    if(dl!=-1){
+        if(dl+1==k){
+            cout<<root->data<<endl;
+        } else{
+            downwardsNodes(root->right, k-(dl+1)-1);
+            return dl+1;
+        }
+    }
+    int dr=printKdistanceNodes(root->right, node, k);
+    if(dr!=-1){
+        if(dr+1==k){
+            cout<<root->data<<endl;
+        } else{
+            downwardsNodes(root->left, k-(dr+1)-1);
+            return dr=1;
+        }
+    }
+    return -1;
+}
+void nodesAtDistanceK(BinaryTreeNode<int> *root, int node, int k){                       // print nodes at distance k
+    printKdistanceNodes(root, node, k);
+}
+
+//////// pair sum in BST /////////
+int countNodes(BinaryTreeNode<int> *root){
+    if(root==NULL){
+        return 0;
+    }
+    return countNodes(root->left)+countNodes(root->right)+1;
+}
+void printNodesSumToS(BinaryTreeNode<int> *root, int s){
+    if(root==NULL){
+        return;
+    }
+    int totalcount=countNodes(root);
+    int count=0;
+    stack<BinaryTreeNode<int>*> inorder;
+    stack<BinaryTreeNode<int>*> revInorder;
+    BinaryTreeNode<int> *temp=root;
+    while(temp!=NULL){
+        inorder.push(temp);
+        temp=temp->left;
+    }
+    temp=root;
+    while(temp!=NULL){
+        revInorder.push(temp);
+        temp=temp->right;
+    }
+
+    while(count<totalcount-1){
+        BinaryTreeNode<int> *top1=inorder.top();
+        BinaryTreeNode<int> *top2=revInorder.top();
+        if(top1->data+top2->data==s){
+            cout<<top1->data<<" "<<top2->data<<endl;
+
+            BinaryTreeNode<int> *top=top1;
+            inorder.pop();
+            count++;
+            if(top->right!=NULL){
+                top=top->right;
+                while(top!=NULL){
+                    inorder.push(top);
+                    top=top->left;
+                }
+            }
+            top=top2;
+            revInorder.pop();
+            count++;
+            if(top->left!=NULL){
+                top=top->left;
+                while(top!=NULL){
+                    revInorder.push(top);
+                    top=top->right;
+                }
+            }
+        }
+        else if(top1->data+top2->data>s){
+            BinaryTreeNode<int> *top=top2;
+            revInorder.pop();
+            count++;
+            if(top->left!=NULL){
+                top=top->left;
+                while(top!=NULL){
+                    revInorder.push(top);
+                    top=top->right;
+                }
+            }
+        }
+        else{
+            BinaryTreeNode<int> *top=top1;
+            inorder.pop();
+            count++;
+            if(top->right!=NULL){
+                top=top->right;
+                while(top!=NULL){
+                    inorder.push(top);
+                    top=top->left;
+                }
+            }
+        }
+    }
 }
