@@ -53,3 +53,12 @@ void InplaceHeapSort(int pq[], int n){
         }
     }
 }
+
+int main(){
+    int arr[]={5,2,1,0,3,8,7};
+    InplaceHeapSort(arr, 7);
+    for(int i=0; i<7; i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
