@@ -5,7 +5,7 @@
 #include<iomanip>
 using namespace std;
 
-bool isMaxHeap(int arr[], int n){
+bool isMaxHeap(int arr[], int n){                                              // is heap
     for(int i=0; i<n; i++){
         int LCI=2*i+1;
         int RCI=2*i+2;
@@ -19,7 +19,7 @@ bool isMaxHeap(int arr[], int n){
     return true;
 }
 
-int kthLargest(vector<int> arr, int n, int k){
+int kthLargest(vector<int> arr, int n, int k){                                 // kth largest
     priority_queue<int, vector<int>, greater<int>> pq;
     for(int i=0; i<k; i++){
         pq.push(arr[i]);
@@ -33,7 +33,7 @@ int kthLargest(vector<int> arr, int n, int k){
     return pq.top();
 }
 
-vector<int> mergeKsortedArrays(vector<vector<int>*> input){
+vector<int> mergeKsortedArrays(vector<vector<int>*> input){                    // merge k sorted arrays
     vector<int> v;
     priority_queue<int, vector<int>, greater<int>> pq;
     for(int i=0; i<input.size(); i++){
@@ -48,7 +48,7 @@ vector<int> mergeKsortedArrays(vector<vector<int>*> input){
     return v; 
 }
 
-void findMedian(int arr[], int n){
+void findMedian(int arr[], int n){                                             // find median
     priority_queue<int, vector<int>, greater<int>> minHeap;
     priority_queue<int> maxHeap;
 
@@ -95,7 +95,7 @@ void findMedian(int arr[], int n){
     }
 }
 
-int buyTicket(int *input, int n, int k){
+int buyTicket(int *input, int n, int k){                                       // buy ticket
     queue<int> q;
     priority_queue<int> pq;
     for(int i=0; i<n; i++){
