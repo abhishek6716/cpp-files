@@ -2,7 +2,7 @@
 #include<cstring>
 using namespace std;
 
-void helper_2(char input[], int start){
+void helper_2(char input[], int start){                              // Doing work after recursive call
     if(input[start]=='\0'){
         return;
     }
@@ -20,7 +20,7 @@ void RemoveX_2(char input[]){
     helper_2(input, 0);
 }
 
-char helper(char input[],char key){
+char helper(char input[],char key){                                  // Doing work before recursive call
     if(input[0]=='\0'){
         return 0;
     }

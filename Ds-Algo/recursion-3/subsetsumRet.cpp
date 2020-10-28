@@ -26,8 +26,8 @@ int subsetSumToK_helper(int input[], int n, int startIndex, int output[][50], in
     for(int i=0; i<size2; i++){
         output[row][0]=smallOutput2[i][0]+1;
         output[row][1]=input[startIndex];
-        for(int j=0; j<=smallOutput2[i][0]; j++){
-            output[row][j+1]=smallOutput2[i][j];
+        for(int j=1; j<=smallOutput2[i][0]; j++){
+            output[row][j+1]=smallOutput2[i][j];                       
         }
         row++;
     }
