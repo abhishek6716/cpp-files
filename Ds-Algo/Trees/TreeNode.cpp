@@ -141,7 +141,7 @@ class MaxNodePair{
     int sum;
 };
 MaxNodePair<int>* maxSumNode_better_helper(TreeNode<int> *root){                    // find max node helper fxn
-    if(root==NULL){
+    if(root==NULL){ 
         MaxNodePair<int> *pair=new MaxNodePair<int>();
         pair->node=NULL;
         pair->sum=INT_MIN;

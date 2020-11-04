@@ -127,7 +127,7 @@ int height(BinaryTreeNode<int> *root){                                          
     if(root==NULL){
         return 0;
     }
-    return 1+height(root->left)+height(root->right);
+    return max(height(root->left), height(root->right))+1;
 }
 
 bool isNodePresent(BinaryTreeNode<int> *root, int n){                                    // node present or not
@@ -167,18 +167,18 @@ void preorder(BinaryTreeNode<int> *root){                                       
     if(root==NULL){
         return;
     }
+    cout<<root->data<<" ";
     preorder(root->left);
     preorder(root->right);
-    cout<<root->data<<" ";
 }
 
 void postorder(BinaryTreeNode<int> *root){                                               // postorder
     if(root==NULL){
         return;
     }
-    cout<<root->data<<" ";
     preorder(root->left);
     preorder(root->right);
+    cout<<root->data<<" ";
 }
 
 void inorder(BinaryTreeNode<int> *root){                                                 // inorder
@@ -256,7 +256,7 @@ int height(BinaryTreeNode<int> *root){                                          
     if(root==NULL){                                                                     
         return 0;
     }
-    return 1+height(root->left)+height(root->right);
+    return 1+max(height(root->left), height(root->right));
 }
 int diameter(BinaryTreeNode<int> *root){                                                 // diameter of tree
     if(root==NULL){                                                                      // complexity O(n*heightOfTree)

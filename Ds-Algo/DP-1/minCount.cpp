@@ -27,7 +27,7 @@ int minCount_1(int n){
     if(sqrt(n)-floor(sqrt(n))==0){                              //Base case-1
         return 1;
     }
-    if(n<3){                                                    //Base case-2
+    if(n<=3){                                                    //Base case-2
         return n;
     }
 
