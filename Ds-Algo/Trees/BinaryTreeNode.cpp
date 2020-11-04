@@ -1,6 +1,7 @@
 #include<iostream>
 #include<queue>
 #include<stack>
+#include<vector>
 using namespace std;
 
 template<typename T>
@@ -323,7 +324,7 @@ int height(BinaryTreeNode<int> *root){                                          
     if(root==NULL){                                                                     
         return 0;
     }
-    return 1+height(root->left)+height(root->right);
+    return 1+max(height(root->left), height(root->right));
 }
 bool isBalanced(BinaryTreeNode<int> *root){                                              // isBalanced
     if(root==NULL){                                                                      // not good complexity
@@ -467,6 +468,58 @@ void NodesWithoutSibling(BinaryTreeNode<int> *root){                            
 
     NodesWithoutSibling(root->left);
     NodesWithoutSibling(root->right);
+}
+
+
+template<typename T>
+class Node{
+    public:
+    T data;
+    Node *next;
+
+    Node(T data){
+        this->data=data;
+        this->next=NULL;
+    }
+};
+vector<Node<int>*> createLLForEachLvl(BinaryTreeNode<int>* root){
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+    int currLvlRem=1;
+    int nextLvlCnt=0;
+    vector<Node<int>*> output;
+    Node<int>* currLvlHead=NULL;
+    Node<int>* currLvlTail=NULL;
+    while(!q.empty()){
+        BinaryTreeNode<int>* front=q.front();
+        q.pop();
+        Node<int>* newNode=new Node<int>(front->data);
+        if(currLvlHead==NULL){
+            currLvlHead=newNode;
+            currLvlTail=newNode;
+        }
+        else{
+            currLvlTail->next=newNode;
+            currLvlTail=newNode;
+        }
+        if(front->left!=NULL){
+            q.push(front->left);
+            nextLvlCnt++;
+        }
+        if(front->right!=NULL){
+            q.push(front->right);
+            nextLvlCnt++;
+        }
+        currLvlRem--;
+        if(currLvlRem==0){
+            output.push_back(currLvlHead);
+            currLvlHead=NULL;
+            currLvlTail=NULL;
+            currLvlRem=nextLvlCnt;
+            nextLvlCnt=0;
+        }
+    }
+    return output;
 }
 
 
