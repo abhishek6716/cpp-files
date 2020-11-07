@@ -31,7 +31,7 @@ BinaryTreeNode<int>* searchInBST(BinaryTreeNode<int> *root, int k){             
     if(root->data==k){
         return root;
     }
-    if(root->data > k){
+    if(k < root->data){
         return searchInBST(root->left, k);
     } else{
         return searchInBST(root->right, k);
@@ -43,15 +43,47 @@ void elementsInRangeK1K2(BinaryTreeNode<int> *root, int k1, int k2){            
         return;
     }
     if(root->data >= k1 && root->data <= k2){
+        elementsInRangeK1K2(root->left, k1, k2);
         cout<<root->data<<" ";
-    }
-    if(k1<root->data){
-        elementsInRangeK1K2(root->left, k1, k2);       
-    }
-    if(k2>root->data){
         elementsInRangeK1K2(root->right, k1, k2);
+        return;
+    }
+    if(root->data<k1){
+        elementsInRangeK1K2(root->right, k1, k2);
+        return;
+    }
+    if(root->data>k2){
+        elementsInRangeK1K2(root->left, k1, k2);
+        return;
     }
 }
+
+void elementsInRangeK1K2(BinaryTreeNode<int> *root, int k1, int k2)  
+{  
+    /* base case */
+    if ( NULL == root )  
+        return;  
+      
+    /* Since the desired o/p is sorted,  
+        recurse for left subtree first  
+        If root->data is greater than k1,  
+        then only we can get o/p keys  
+        in left subtree */
+    if ( k1 < root->data )  
+        elementsInRangeK1K2(root->left, k1, k2);  
+      
+    /* if root's data lies in range,  
+    then prints root's data */
+    if ( k1 <= root->data && k2 >= root->data )  
+        cout<<root->data<<" ";  
+      
+    /* If root->data is smaller than k2, 
+        then only we can get o/p keys  
+        in right subtree */
+    if ( k2 > root->data )  
+        elementsInRangeK1K2(root->right, k1, k2);  
+}  
+
 
 bool checkBST(BinaryTreeNode<int> *root, int minima, int maxima){                        // topdown approach
     if(root==NULL){
