@@ -89,7 +89,7 @@ void findMedian(int arr[], int n){                                             /
             if(minHeap.empty()==false){
                 median=median+minHeap.top();
             }
-            median=median/1;
+            median=median/2;
         }
         cout<<median<<endl;
     }

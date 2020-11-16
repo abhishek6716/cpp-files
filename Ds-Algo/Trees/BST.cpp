@@ -229,12 +229,12 @@ base helper(BinaryTreeNode<int> *root){
         return b;
     }
 }
-Node<int>* LLfromBST(BinaryTreeNode<int> *root){                                         // // BST from sorted array
+Node<int>* LLfromBST(BinaryTreeNode<int> *root){                                         //// LL from sorted array
     base b=helper(root);
     return b.head;
 }
 
-vector<int>* getRootToNodePath(BinaryTreeNode<int> *root, int data){
+vector<int>* getRootToNodePath(BinaryTreeNode<int> *root, int data){                     // root to node path
     if(root==NULL){
         return NULL;
     }
