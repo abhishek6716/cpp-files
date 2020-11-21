@@ -2,6 +2,7 @@
 using namespace std;
 
 
+
 //by DP method
 int knapsack_dp(int *wts, int *values, int n, int maxwts){
     int a=n;
@@ -35,7 +36,7 @@ int knapsack_dp(int *wts, int *values, int n, int maxwts){
     return output[a][b];
 }
 
-/// on second time achived better solution 
+/// second time getting better solution 
 /// memoisation
 int helper(int *wts, int *val, int n, int maxwts, int **output)
 {
@@ -73,7 +74,7 @@ int knapsack_mem(int *wts, int *val, int n, int maxwts)
     return helper(wts, val, n, maxwts, output);
 }
 /*
-// first time code written by me having lots of mistakes
+// first time did lots of mistakes
 int knapsack_mem(int *wts, int *values, int n, int maxwts, int **output){
     int p=n+1;
     int q=maxwts+1;
@@ -109,7 +110,6 @@ int knapsack_mem(int *wts, int *values, int n, int maxwts){
     return knapsack_mem(wts, values, n, maxwts, output);
 }
 */
-
 
 
 
@@ -149,6 +149,14 @@ int main() {
     cout<<knapsack_mem(weights, values, n, maxWeight)<<endl;
     cout<<knapsack_dp(weights, values, n, maxWeight)<<endl;
 }
+
+/*
+we can easily drive recursive formula from rec soln
+knapsack[i][j]=knapsack[i-1][j] , if w[i]>j
+or,            max{knapsack[i-1][j], v[i]+knapsack[i-1][j-w[i]] } , if w[i]<=j
+
+The time complexity of this solution is O(n*M)
+*/
 
 
 
