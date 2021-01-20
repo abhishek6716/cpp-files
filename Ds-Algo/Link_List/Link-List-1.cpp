@@ -99,13 +99,13 @@ Node* appendLastNtoFirst(Node* head, int n){                                   /
     }
     Node* fast=head;
     Node* slow=head;
-    Node* initialHead;
+    Node* initialHead=head;
 
     for(int i=0; i<n; i++){
         fast=fast->next;
     }
 
-    while(fast!=NULL){
+    while(fast->next!=NULL){
         fast=fast->next;
         slow=slow->next;
     }
