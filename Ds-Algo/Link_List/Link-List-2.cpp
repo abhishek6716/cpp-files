@@ -146,15 +146,20 @@ Node* EvenAfterOdd(Node* head){                                                /
         }
         head=head->next;
     }
+    if(evenTail!=NULL){
+        evenTail->next=NULL;
+    }
+    if(oddTail!=NULL){
+        oddTail->next=NULL;
+    }
+
     if(oddHead==NULL){
         return evenHead;
     }
     else{
         oddTail->next=evenHead;
     }
-    if(evenHead!=NULL){
-        evenTail->next=NULL;
-    }
+    
     return oddHead;
 }
 
