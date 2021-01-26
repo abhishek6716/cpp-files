@@ -93,7 +93,7 @@ TreeNode<int>* nextLargerElement(TreeNode<int> *root, int n){                   
         return NULL;
     }
     TreeNode<int> *ans=NULL;
-    if(n>root->data){
+    if(root->data > n){
         ans=root;
     }
     for(int i=0; i<root->children.size(); i++){
