@@ -44,8 +44,10 @@ class BST{
         }
         if(data < node->data){
             node->left=deleteData(data, node->left);
+            return node;
         } else if(data > node->data){
             node->right=deleteData(data, node->right);
+            return node;
         } else{
             if(node->left==NULL && node->right==NULL){
                 delete node;
@@ -294,6 +296,8 @@ int lcaInBST2(BinaryTreeNode<int> *root, int x, int y){                         
 }
 
 ////// largest BST subtree/////////
+
+
 int minimum(BinaryTreeNode<int> *root){
     if(root==NULL){
         return INT_MAX;
