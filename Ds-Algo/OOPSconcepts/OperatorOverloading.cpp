@@ -55,7 +55,7 @@ class fraction{
         return newFraction;
     }
 
-    void multiply(fraction const &f2){
+    void multiply(fraction const &f2){  
         this->numerator=this->numerator*f2.numerator;
         this->denominator=this->denominator*f2.denominator;
         simplify();
